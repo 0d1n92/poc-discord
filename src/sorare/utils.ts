@@ -17,7 +17,6 @@ export default class Utils {
   public static getSalt= async (): Promise<string | boolean> => {
     return axios.get(`${process.env.API_URL}/api/v1//users/${process.env.EMAIL_SORARE}`)
       .then((res) => {
-        console.log(res);
         return res.data.salt;
       }).catch(
         (err: any) => {

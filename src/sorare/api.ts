@@ -14,7 +14,6 @@ export default class SorareApi {
     },
   });
 
-    // Definizione della mutation SignInMutation
     const mutation = `
      mutation SignInMutation($input: signInInput!) {
       signIn(input: $input) {
@@ -32,7 +31,6 @@ export default class SorareApi {
     }
   `;
 
-    // Parametri per la mutation
     let hashPassword: string = '';
 
     const salt = await Utils.getSalt();
@@ -54,9 +52,12 @@ export default class SorareApi {
         const { token, expiredAt } = data.signIn.currentUser.jwtToken;
         process.env.JWT_TOKEN = token;
         process.env.JWT_TOKEN_EXPIRY = expiredAt;
+      } else {
+        const { errors } = data.signIn
+        throw new Error('Errore auth sorare'+ errors);
       }
     } catch (error) {
-      console.error('Errore durante la richiesta:', error);
+      throw new Error('Errore auth sorare:' + error);
     }
   }
 }

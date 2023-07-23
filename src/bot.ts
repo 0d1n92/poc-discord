@@ -1,26 +1,43 @@
 import 'dotenv/config';
-import { Client, GatewayIntentBits } from 'discord.js';
-import SorareApi from './functions/sorare/api';
+import { Client, GatewayIntentBits, Message } from 'discord.js';
+import SorareApi from './sorare/api';
+import WsSorare from './sorare/ws';
 
-const sorareApi: SorareApi = new SorareApi();
-const client = new Client({
-	intents: [
-		GatewayIntentBits.Guilds,
-		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent
-	],
-});
+export default class Bot {
+  private client: Client;
+  private sorareApi: SorareApi;
 
-client.on('ready', () => {
-	console.log(`Logged in as ${client.user!.tag}`);
-  sorareApi.Auth()
+  constructor() {
+    this.client = new Client({
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+      ],
+    });
 
-});
+    this.sorareApi = new SorareApi();
 
-client.on('messageCreate', (msg) => {
-	if (msg.content === 'ping') {
-		msg.reply('pong');
-	}
-});
+    this.onInit();
 
-client.login(process.env.TOKEN);
+    this.client.on('messageCreate', (msg: Message) => this.handleMessage(msg));
+
+    this.client.login(process.env.TOKEN);
+  }
+
+  private async onInit() {
+      this.client.on('ready', async () => {
+      console.log(`Logged in as ${this.client.user!.tag}`);
+      await this.sorareApi.Auth();
+      const ws = new WsSorare();
+      await ws.Start();
+    });
+  }
+
+  private handleMessage = (msg: Message) => {
+    if (msg.content === 'ping') {
+      msg.reply('pong');
+    }
+  }
+
+}
