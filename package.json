@@ -1,0 +1,28 @@
+{
+  "name": "test-boat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/bot.js",
+    "clean": "rmdir /s /q dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^1.7.1",
+    "@sorare/actioncable": "^1.0.3",
+    "axios": "^1.4.0",
+    "bcrypt": "^5.1.0",
+    "discord-api-types": "^0.37.50",
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.3.1",
+    "graphql-request": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "typescript": "^5.1.6"
+  }
+}
