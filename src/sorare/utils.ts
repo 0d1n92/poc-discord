@@ -26,4 +26,14 @@ export default class Utils {
       );
   }
 
+  public static calculatedAveragePrice(max: number, min: number, current: number) {
+
+     const mediumPice = (min + max)/2
+     const differenzaPercentuale: number = ((mediumPice - current) / mediumPice) * 100;
+     if(differenzaPercentuale < 19.50) {
+        return true
+     }
+     return false
+  }
+
 }

@@ -1,7 +1,10 @@
 import 'dotenv/config';
-import { Client, GatewayIntentBits, Message } from 'discord.js';
+import { Client, GatewayIntentBits, Message, EmbedBuilder, TextChannel, Channel} from 'discord.js';
 import SorareApi from './sorare/api';
 import WsSorare from './sorare/ws';
+import * as QUERY from "./sorare/queries/WsQueries";
+import Utils from './sorare/utils';
+
 
 export default class Bot {
   private client: Client;
@@ -15,22 +18,20 @@ export default class Bot {
         GatewayIntentBits.MessageContent,
       ],
     });
+    this.client.login(process.env.TOKEN);
 
     this.sorareApi = new SorareApi();
-
+    this.client.channels.cache.get(String(process.env.CHANNEL_ID));
     this.onInit();
-
-    this.client.on('messageCreate', (msg: Message) => this.handleMessage(msg));
-
-    this.client.login(process.env.TOKEN);
   }
-
   private async onInit() {
       this.client.on('ready', async () => {
       console.log(`Logged in as ${this.client.user!.tag}`);
       await this.sorareApi.Auth();
-      const ws = new WsSorare();
-      await ws.Start();
+      const ws = new WsSorare(this.client);
+      await ws.Start(QUERY.ACART_UPDATE) ;
+      this.client.on('messageCreate', (msg: Message) => this.handleMessage(msg));
+
     });
   }
 
