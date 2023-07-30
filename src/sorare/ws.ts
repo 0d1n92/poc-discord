@@ -1,16 +1,11 @@
 import { ActionCable } from "@sorare/actioncable";
-import { Channel, Client, DMChannel, EmbedBuilder, Message, TextChannel } from "discord.js";
-import Utils from './utils';
-
 
 export default class WsSorare {
 
-    public cable: ActionCable;
-    public client: Client;
+    private cable: ActionCable;
+    private result!: IAuctionUpdateResponse;
 
-
-    constructor(client: Client) {
-        this.client = client;
+    constructor() {
         this.cable = new ActionCable({
         url: process.env.WS_SORARE,
         headers: {
@@ -20,9 +15,16 @@ export default class WsSorare {
       });
     }
 
-   public Start = (query: string): Promise<AuctionUpdateResponse> | null => {
-    const self = this;
-    return new Promise<AuctionUpdateResponse>((resolve, reject) => {
+  /**
+   * avvia la webSocket e crea la subscrition sorare.
+   *
+   * @param {string} query - Il primo valore.
+   * @param {function(any): void} action - azione che voglio che faccia quanto ritorna i risultati.
+   * @returns {void}
+  */
+
+   public Start = (query: string, action: (value: any) => void) => {
+      const self = this;
       this.cable.subscribe(query, {
         connected() {
           console.log('connesso');
@@ -34,45 +36,17 @@ export default class WsSorare {
 
         rejected() {
           console.log('rifiutato');
-          reject(new Error('Connessione rifiutata'));
         },
 
         received(data) {
           console.log('ricevuto');
-          const response: AuctionUpdateResponse = data.result;
-          if(response?.data.tokenAuctionWasUpdated && response?.data.tokenAuctionWasUpdated.nfts[0].priceRange) {
-            const {min, max} = response?.data.tokenAuctionWasUpdated.nfts[0].priceRange;
+          self.result = data.result;
+          action(self.result)
 
-            if(Utils.calculatedAveragePrice( Number(min), Number(max), Number(response.data.tokenAuctionWasUpdated.currentPrice))) {
-
-              self.printACard(response.data.tokenAuctionWasUpdated)
-
-          }
-        }
-
-          return resolve(response);
         },
       });
-    });
   }
 
-  private printACard = async (card: TokenAuction)  => {
-      const {pictureUrl, name, slug} = card.nfts[0]
-        const embed = new EmbedBuilder()
-      .setTitle(name)
-      .setURL(`https://sorare.com/football/cards/${slug}`)
-      .setImage(pictureUrl);
 
-    const channel = this.client.channels.cache.get(String(process.env.CHANNEL_ID));
-     if (channel instanceof TextChannel || channel instanceof DMChannel) {
-    try {
-          await (channel as TextChannel | DMChannel).send({ embeds: [embed] });
-        } catch (error) {
-          console.error('Errore nell\'invio del messaggio:', error);
-        }
-      } else {
-        console.error(`Il canale con ID ${process.env.CHANNEL_ID} non è un TextChannel o un DMChannel.`);
-      }
-  }
 
 }

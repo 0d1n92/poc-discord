@@ -1,6 +1,6 @@
 import { GraphQLClient, gql } from 'graphql-request';
 import 'dotenv/config';
-import Utils from './utils'
+import Utils from '../Helper/utils'
 import { SignInResponse } from './dto';
 
 
