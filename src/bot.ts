@@ -5,6 +5,7 @@ import WsSorare from './sorare/ws';
 import * as QUERY from "./sorare/queries/WsQueries";
 import Utils from './Helper/utils';
 import WeiConverter from './Helper/weiConvert';
+import { IAuctionUpdateResponse, ITokenAuction } from './sorare/dto/IAuctionUpdateResponse';
 
 export default class Bot {
   private client: Client;

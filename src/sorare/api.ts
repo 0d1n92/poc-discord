@@ -1,8 +1,7 @@
 import { GraphQLClient, gql } from 'graphql-request';
 import 'dotenv/config';
 import Utils from '../Helper/utils'
-import { SignInResponse } from './dto';
-
+import { ISignInResponse } from './dto/ISignInResponse';
 
 export default class SorareApi {
 
@@ -47,7 +46,7 @@ export default class SorareApi {
     };
 
     try {
-      const data = await graphQLClient.request<SignInResponse>(mutation, variables);
+      const data = await graphQLClient.request<ISignInResponse>(mutation, variables);
       if (data && data.signIn && data.signIn.currentUser) {
         const { token, expiredAt } = data.signIn.currentUser.jwtToken;
         process.env.JWT_TOKEN = token;

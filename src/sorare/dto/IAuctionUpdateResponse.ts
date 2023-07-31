@@ -1,19 +1,19 @@
-interface IFiat {
+export interface IFiat {
   eur: number;
 }
 
-interface IRange {
+export interface IRange {
 
   max: string;
   min: string;
 }
 
-interface ITokenBid {
+export interface ITokenBid {
   amount: string;
   amountInFiat: IFiat;
 }
 
-interface IToken {
+export interface IToken {
   name: string;
   slug: String;
   pictureUrl: string;
@@ -21,14 +21,15 @@ interface IToken {
   publicMinPrices: null | any[];
 }
 
-interface ITokenAuction {
+export interface ITokenAuction {
   bestBid: ITokenBid;
   currentPrice: string;
   nfts: IToken[];
 }
 
-interface IAuctionUpdateResponse  {
+export interface IAuctionUpdateResponse  {
   data: {
     tokenAuctionWasUpdated: ITokenAuction;
   };
 }
+

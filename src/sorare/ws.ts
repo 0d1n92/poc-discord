@@ -1,4 +1,5 @@
 import { ActionCable } from "@sorare/actioncable";
+import { IAuctionUpdateResponse } from "./dto/IAuctionUpdateResponse";
 
 export default class WsSorare {
 
