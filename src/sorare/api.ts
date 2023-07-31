@@ -1,9 +1,18 @@
-import { GraphQLClient, gql } from 'graphql-request';
+import { GraphQLClient } from 'graphql-request';
 import 'dotenv/config';
-import Utils from '../Helper/utils'
+import Helper from '../utils/helper'
 import { ISignInResponse } from './dto/ISignInResponse';
+import https from 'https';
 
 export default class SorareApi {
+private static instance: SorareApi | null = null;
+  private constructor() { }
+  public static getInstance(): SorareApi {
+    if (!SorareApi.instance) {
+      SorareApi.instance = new SorareApi();
+    }
+    return SorareApi.instance;
+  }
 
   public Auth = async () => {
     const graphQLClient = new GraphQLClient(`${process.env.API_URL}/federation/graphql`,
@@ -32,10 +41,10 @@ export default class SorareApi {
 
     let hashPassword: string = '';
 
-    const salt = await Utils.getSalt();
+    const salt = await Helper.getSalt();
 
     if(salt) {
-      hashPassword = await Utils.hashPassword(process.env.PSWD_SORARE, salt.toString())
+      hashPassword = await Helper.hashPassword(process.env.PSWD_SORARE, salt.toString())
     }
 
     const variables = {

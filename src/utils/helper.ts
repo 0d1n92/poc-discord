@@ -2,7 +2,7 @@ import axios from 'axios';
 import bcrypt = require("bcrypt");
 import 'dotenv/config';
 
-export default class Utils {
+export default class Helper {
 
 
   public static hashPassword = async (pswd: string | undefined, salt: string): Promise<string> => {

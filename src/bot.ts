@@ -2,9 +2,9 @@ import 'dotenv/config';
 import { Client, GatewayIntentBits, Message, EmbedBuilder, TextChannel, Channel, DMChannel} from 'discord.js';
 import SorareApi from './sorare/api';
 import WsSorare from './sorare/ws';
-import * as QUERY from "./sorare/queries/WsQueries";
-import Utils from './Helper/utils';
-import WeiConverter from './Helper/weiConvert';
+import * as QUERY from "./sorare/queries/wsQueries";
+import Helper from './utils/helper';
+import WeiConverter from './utils/weiConvert';
 import { IAuctionUpdateResponse, ITokenAuction } from './sorare/dto/IAuctionUpdateResponse';
 
 export default class Bot {
@@ -21,7 +21,7 @@ export default class Bot {
     });
     this.client.login(process.env.TOKEN);
 
-    this.sorareApi = new SorareApi();
+    this.sorareApi = SorareApi.getInstance();
     this.client.channels.cache.get(String(process.env.CHANNEL_ID));
     this.onInit();
   }
@@ -45,7 +45,7 @@ export default class Bot {
         const parsedMin = Number(min);
         const parsedMax = Number(max);
 
-        const [isInRage, mediumPrice, differencePercentage] = Utils.calculatedAveragePrice(parsedMin, parsedMax, Number(tokenAuctionWasUpdated.currentPrice));
+        const [isInRage, mediumPrice, differencePercentage] = Helper.calculatedAveragePrice(parsedMin, parsedMax, Number(tokenAuctionWasUpdated.currentPrice));
 
         if (isInRage) this.printACard(tokenAuctionWasUpdated, mediumPrice, differencePercentage);
     }
