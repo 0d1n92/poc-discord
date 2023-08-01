@@ -1,5 +1,5 @@
 
-export const ACART_UPDATE: string =  `
+export const AUCTION_UPDATE: string =  `
     tokenAuctionWasUpdated(sports:FOOTBALL){
     currentPrice
     bestBid {

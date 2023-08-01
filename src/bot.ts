@@ -8,10 +8,11 @@ import WeiConverter from './utils/weiConvert';
 import { IAuctionUpdateResponse, ITokenAuction } from './sorare/dto/IAuctionUpdateResponse';
 
 export default class Bot {
+  private static instance: Bot | null = null;
   private client: Client;
   private sorareApi: SorareApi;
 
-  constructor() {
+  private constructor() {
     this.client = new Client({
       intents: [
         GatewayIntentBits.Guilds,
@@ -20,17 +21,24 @@ export default class Bot {
       ],
     });
     this.client.login(process.env.TOKEN);
-
     this.sorareApi = SorareApi.getInstance();
     this.client.channels.cache.get(String(process.env.CHANNEL_ID));
     this.onInit();
   }
+
+  public static getInstance(): Bot {
+    if (!Bot.instance) {
+      Bot.instance = new Bot();
+    }
+    return Bot.instance;
+  }
+
   private async onInit() {
       this.client.on('ready', async () => {
       console.log(`Logged in as ${this.client.user!.tag}`);
       await this.sorareApi.Auth();
       const ws = new WsSorare();
-      await ws.Start(QUERY.ACART_UPDATE, this.notifyAuctionACard) ;
+      await ws.Start(QUERY.AUCTION_UPDATE, this.notifyAuctionACard) ;
       this.client.on('messageCreate', (msg: Message) => this.handleMessage(msg));
 
     });

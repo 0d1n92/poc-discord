@@ -1,3 +1,3 @@
 import Bot from "./bot";
 
-const bot = new Bot();
+const bot = Bot.getInstance();
