@@ -3,7 +3,6 @@ export interface IFiat {
 }
 
 export interface IRange {
-
   max: string;
   min: string;
 }
@@ -15,10 +14,10 @@ export interface ITokenBid {
 
 export interface IToken {
   name: string;
-  slug: String;
+  slug: string;
   pictureUrl: string;
   priceRange: IRange;
-  publicMinPrices: null | any[];
+  publicMinPrices: null | unknown[];
 }
 
 export interface ITokenAuction {
@@ -27,9 +26,8 @@ export interface ITokenAuction {
   nfts: IToken[];
 }
 
-export interface IAuctionUpdateResponse  {
+export interface IAuctionUpdateResponse {
   data: {
     tokenAuctionWasUpdated: ITokenAuction;
   };
 }
-

@@ -1,12 +1,11 @@
 import { GraphQLClient } from 'graphql-request';
 import 'dotenv/config';
-import Helper from '../utils/helper'
+import Helper from '../utils/helper';
 import { ISignInResponse } from './dto/ISignInResponse';
-import https from 'https';
 
 export default class SorareApi {
-private static instance: SorareApi | null = null;
-  private constructor() { }
+  private static instance: SorareApi | null = null;
+  private constructor() {}
   public static getInstance(): SorareApi {
     if (!SorareApi.instance) {
       SorareApi.instance = new SorareApi();
@@ -15,12 +14,14 @@ private static instance: SorareApi | null = null;
   }
 
   public Auth = async () => {
-    const graphQLClient = new GraphQLClient(`${process.env.API_URL}/federation/graphql`,
-    {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+    const graphQLClient = new GraphQLClient(
+      `${process.env.API_URL}/federation/graphql`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
     const mutation = `
      mutation SignInMutation($input: signInInput!) {
@@ -43,29 +44,35 @@ private static instance: SorareApi | null = null;
 
     const salt = await Helper.getSalt();
 
-    if(salt) {
-      hashPassword = await Helper.hashPassword(process.env.PSWD_SORARE, salt.toString())
+    if (salt) {
+      hashPassword = await Helper.hashPassword(
+        process.env.PSWD_SORARE,
+        salt.toString()
+      );
     }
 
     const variables = {
       input: {
         email: process.env.EMAIL_SORARE,
-        password: hashPassword
+        password: hashPassword,
       },
     };
 
     try {
-      const data = await graphQLClient.request<ISignInResponse>(mutation, variables);
+      const data = await graphQLClient.request<ISignInResponse>(
+        mutation,
+        variables
+      );
       if (data && data.signIn && data.signIn.currentUser) {
         const { token, expiredAt } = data.signIn.currentUser.jwtToken;
         process.env.JWT_TOKEN = token;
         process.env.JWT_TOKEN_EXPIRY = expiredAt;
       } else {
-        const { errors } = data.signIn
-        throw new Error('Errore auth sorare'+ errors);
+        const { errors } = data.signIn;
+        throw new Error('Errore auth sorare' + errors);
       }
     } catch (error) {
       throw new Error('Errore auth sorare:' + error);
     }
-  }
+  };
 }

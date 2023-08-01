@@ -1,13 +1,13 @@
 export interface ISignInResponse {
-    signIn: {
-      currentUser: {
-        jwtToken: {
-          token: string;
-          expiredAt: string;
-        };
+  signIn: {
+    currentUser: {
+      jwtToken: {
+        token: string;
+        expiredAt: string;
       };
-      errors: {
-        message: string;
-      }[];
     };
-  }
+    errors: {
+      message: string;
+    }[];
+  };
+}
