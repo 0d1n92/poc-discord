@@ -119,6 +119,9 @@ export default class Bot {
   //#endregion
 
   private handleMessage = (msg: Message) => {
+    if (msg.author.bot) {
+      return; // Non rispondere ai messaggi inviati dal bot stesso
+    }
     if (msg.content === 'ping') {
       msg.reply('pong');
     }
