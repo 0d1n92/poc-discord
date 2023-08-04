@@ -46,12 +46,12 @@ export default class Bot {
   private async onInit() {
     this.client.on('ready', async () => {
       console.log(`Logged in as ${this.client.user!.tag}`);
-      await this.sorareApi.Auth();
-      const ws = new WsSorare();
-      await ws.Start(QUERY.AUCTION_UPDATE, this.notifyAuctionACard);
       this.client.on('messageCreate', (msg: Message) =>
         this.handleMessage(msg)
       );
+      await this.sorareApi.Auth();
+      const ws = new WsSorare();
+      await ws.Start(QUERY.AUCTION_UPDATE, this.notifyAuctionACard);
     });
   }
 
