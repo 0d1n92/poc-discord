@@ -9,8 +9,19 @@ module.exports = function (api) {
 
 
   return {
-    presets: [['@babel/preset-typescript', { allowDeclareFields: true, }]],
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          targets: {
+            node: 'current',
+          },
+        },
+      ],
+
+      ['@babel/preset-typescript', { allowDeclareFields: true }],
+    ],
     plugins,
-    comments: false
+    comments: false,
   };
 };
