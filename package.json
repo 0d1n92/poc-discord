@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "eslint . --ext .ts && tsc && node dist/main.js",
+    "start": "tsc && node dist/main.js",
     "clean": "rmdir /s /q dist",
-    "build": "npm install && tsc"
+    "build": "npm install && eslint . --ext .ts && tsc"
   },
   "keywords": [],
   "author": "",
