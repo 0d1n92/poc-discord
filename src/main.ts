@@ -6,6 +6,7 @@ import keepAlive from './server';
 if (process.env.MODE === 'PROD') {
   const server = keepAlive();
   server.listen(process.env.PORT, () => {
+    // eslint-disable-next-line no-console
     console.log(
       `⚡️[server]: Server is running at http://localhost:${process.env.PORT}`
     );

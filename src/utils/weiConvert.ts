@@ -33,14 +33,14 @@ export default class WeiConverter {
     this.amount = amount;
   }
 
-  public call(unit: string = "eth"): string | null {
+  public call(unit: string = 'eth'): string | null {
     if (!this.amount) {
       return null;
     }
 
     const unitValue = WeiConverter.UNITS[unit.toLowerCase()];
     if (unitValue === undefined) {
-      throw new Error("Invalid unit provided.");
+      throw new Error('Invalid unit provided.');
     }
 
     const amountInWei = parseFloat(this.amount);

@@ -36,9 +36,7 @@ export default class WsSorare {
       disconnected() {
         console.log('disconnesso');
         setTimeout(() => {
-          setTimeout(() => {
-            this.connected; // Riconnetti il bot al canale Action Cable.
-          }, 5000);
+          this.connected; // Riconnetti il bot al canale Action Cable.
         }, 5000);
       },
 
@@ -47,7 +45,6 @@ export default class WsSorare {
       },
 
       received(data) {
-        console.log('Ricevuto nuovo messaggio:', data.result);
         self.result = data.result;
         action(self.result);
       },

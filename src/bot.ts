@@ -120,7 +120,7 @@ export default class Bot {
 
   private handleMessage = (msg: Message) => {
     if (msg.author.bot) {
-      return; // Non rispondere ai messaggi inviati dal bot stesso
+      return;
     }
     if (msg.content === 'ping') {
       msg.reply('pong');
