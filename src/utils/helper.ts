@@ -1,5 +1,5 @@
 import axios from 'axios';
-import bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 import 'dotenv/config';
 
 export default class Helper {

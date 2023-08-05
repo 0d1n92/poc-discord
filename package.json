@@ -1,5 +1,5 @@
 {
-  "name": "test-boat",
+  "name": "test-bot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node dist/main.js",
     "clean": "rmdir /s /q dist",
-    "build": "npm install && eslint . --ext .ts && tsc"
+    "build": "npm install && babel src --out-dir dist --extensions \".ts\" && tsc"
   },
   "keywords": [],
   "author": "",
@@ -26,10 +26,13 @@
     "graphql-request": "^6.1.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/preset-typescript": "^7.22.5",
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.17",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^8.46.0",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6"
